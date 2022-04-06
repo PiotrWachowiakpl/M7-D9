@@ -3,41 +3,40 @@ import { io } from "socket.io-client";
 import { FormEvent, useEffect, useState } from "react";
 
 const ADDRESS = "http://localhost:3030";
-
 const socket = io(ADDRESS, { transports: ["websocket"] });
 
 const ChatBox = () => {
-  const [user, setUser] = useState("");
 
-  
-  
-  useEffect(() => {
+  useEffect(()=>{
+
     socket.on("connect", () => {
-      console.log("connected");
+      console.log("Connection established!");
     });
 
+  }, [])
 
 
-  }, []);
+  const [username, setUsername] = useState("");
 
-  const handleSubmit =(e: FormEvent)=>{
-    e.preventDefault()
+  useEffect(() => {}, []);
 
-    socket.emit('setUser', {
-      user
-    })
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
 
-  }
+    socket.emit("setUsername", {
+      username,
+    });
+  };
   return (
     <Container fluid className="px-4 mt-3">
       <Row style={{ height: "95vh" }}>
         <Col md={10} className="d-flex flex-column justify-content-between">
-          <Form onSubmit={() => {handleSubmit}}>
+          <Form onSubmit={handleSubmit}>
             <Form.Control
               type="text"
               placeholder="Enter your username"
-              value={user}
-              onChange={(e) => setUser(e.target.value)}
+              // value={username}
+              // onChange={(e) => setUsername(e.target.value)}
             />
           </Form>
 
